@@ -1,0 +1,87 @@
+/* General Body Styling */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #185a9d, #43cea2);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+#logoutBtn {
+  background-color: #ff5252;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #e84141;
+}
+
+/* Main Section */
+main {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+main h2 {
+  font-size: 22px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 15px;
+}
+
+ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 15px;
+  background-color: #43cea2;
+  border-radius: 8px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+ul li a:hover {
+  background-color: #2cb18a;
+}

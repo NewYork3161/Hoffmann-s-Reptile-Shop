@@ -1,0 +1,224 @@
+/* Reset and base styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Navbar styles */
+.navbar {
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: #555;
+  margin-left: 20px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #2e7d32 !important;
+  transition: color 0.3s ease;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+/* Carousel image styling */
+.carousel-item img {
+  height: 100vh;
+  object-fit: cover;
+  width: 100%;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  text-align: left;
+  max-width: 550px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+.carousel-caption h1,
+.carousel-caption h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.carousel-caption h5,
+.carousel-caption p {
+  font-size: 1.1rem;
+  font-weight: normal;
+  line-height: 1.6;
+  color: #eee;
+  margin-bottom: 0;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption {
+    top: 60%;
+    left: 5%;
+    right: 5%;
+    transform: translateY(-50%);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .carousel-caption h1,
+  .carousel-caption h2 {
+    font-size: 2rem;
+  }
+
+  .carousel-caption h5,
+  .carousel-caption p {
+    font-size: 1rem;
+  }
+}
+
+/* Content Body Section Fullscreen */
+#content-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 80px;
+  background-color: #fff;
+}
+
+#content-body .container {
+  max-width: 1400px;
+  padding-top: 40px;
+}
+
+#content-body img {
+  max-height: 80vh;
+  width: auto;
+  object-fit: contain;
+}
+
+#content-body img.rounded.shadow {
+  box-shadow: none !important;
+  border-radius: 0;
+}
+
+/* Shop Tabs Navigation */
+#shop-tabs .nav-link {
+  color: #555;
+  font-weight: 600;
+  font-size: 1rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+#shop-tabs .nav-link:hover {
+  color: #2e7d32;
+}
+
+#shop-tabs .nav-link::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 0;
+  background-color: #2e7d32;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+}
+
+#shop-tabs .nav-link:hover::after {
+  width: 100%;
+}
+
+/* Animal Gallery */
+#animal-gallery img {
+  transition: transform 0.3s;
+}
+
+#animal-gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Reptile Feature */
+#reptile-feature img {
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* Contact Section */
+#contact-section {
+  padding: 60px 0;
+}
+
+#contact-section form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Map overlay text */
+#contact-section .position-relative span {
+  pointer-events: none;
+}
+
+/* Footer */
+footer {
+  background-color: #2e7d32;
+  color: white;
+  padding: 40px 0 20px;
+  font-size: 0.9rem;
+}
+
+.footer-line {
+  border-color: rgba(255, 255, 255, 0.2);
+  margin: 20px 0;
+}
+
+footer h5 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+footer small {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #ddd;
+}
+#animal-gallery img {
+  width: 100%;
+  height: 250px; /* You can adjust height as needed */
+  object-fit: cover; /* Ensures images fill the area uniformly */
+  border-radius: 8px; /* Optional: adds smooth corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: gives images a subtle shadow */
+}
