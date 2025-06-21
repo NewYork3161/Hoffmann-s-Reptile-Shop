@@ -1,43 +1,54 @@
-// public/JS/admin_dashboard.js
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// ✅ Replace with your Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyAcQ_874l2xxBLHKazynoCN_g6l3zFzpQU",
   authDomain: "splat-37995.firebaseapp.com",
   projectId: "splat-37995",
   storageBucket: "splat-37995.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  messagingSenderId: "687156095255",
+  appId: "1:687156095255:web:1cd7aa1e72cb91a0d361e0"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// 🕓 Wait until Firebase is fully initialized
 document.addEventListener("DOMContentLoaded", () => {
+  const isLoggedIn = sessionStorage.getItem("adminLoggedIn");
+
+  if (!isLoggedIn) {
+    alert("Access denied. Please log in first.");
+    window.location.href = "/admin-register-x93K7h2Lm5B4f9Q";
+    return;
+  }
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log("✅ User authenticated:", user.email);
     } else {
-      alert("Access denied. Please log in first.");
+      sessionStorage.removeItem("adminLoggedIn");
+      alert("Session expired or invalid. Please log in again.");
       window.location.href = "/admin-register-x93K7h2Lm5B4f9Q";
     }
   });
 
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth)
-        .then(() => {
-          alert("You've been logged out.");
-          window.location.href = "/admin-register-x93K7h2Lm5B4f9Q";
-        })
-        .catch((error) => {
-          console.error("Logout error:", error);
-        });
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.removeItem("adminLoggedIn");
+
+        // Suppress redirect warning by telling fetch not to follow it
+        await fetch("/admin/logout", { method: "GET", redirect: "manual" });
+
+        // Redirect manually
+        window.location.href = "/admin-register-x93K7h2Lm5B4f9Q";
+      } catch (error) {
+        console.warn("Logout warning (safe to ignore):", error);
+        // Still redirect safely
+        window.location.href = "/admin-register-x93K7h2Lm5B4f9Q";
+      }
     });
   }
 });

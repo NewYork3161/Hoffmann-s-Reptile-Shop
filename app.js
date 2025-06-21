@@ -1,15 +1,19 @@
-// app.js
-
 const express = require('express');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Set EJS as the view engine
+// Set EJS view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -18,24 +22,97 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Session middleware
+// Prevent browser caching on all routes
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store');
+  next();
+});
+
+// Session middleware (expires in 15 mins)
 app.use(session({
-  secret: 'supersecretkeyhere', // Replace with env var in production
+  secret: 'supersecretkeyhere',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false, // Set to true in production with HTTPS
-    maxAge: 60 * 60 * 1000 // 1 hour
+    secure: false, // set to true with HTTPS in production
+    maxAge: 15 * 60 * 1000 // 15 minutes
   }
 }));
 
-// Home route
+// Session guard middleware
+const requireLogin = (req, res, next) => {
+  if (req.session && req.session.adminLoggedIn) {
+    next();
+  } else {
+    res.redirect('/admin-register-x93K7h2Lm5B4f9Q');
+  }
+};
+
+// Public Routes
 app.get('/', (req, res) => {
   res.render('home');
 });
 
-// Contact form email route
+app.get('/admin-register-x93K7h2Lm5B4f9Q', (req, res) => {
+  res.render('newadmin');
+});
+
+// Secure session creation
+app.post('/admin/session-login', (req, res) => {
+  const { isLoggedIn } = req.body;
+  if (isLoggedIn) {
+    req.session.regenerate((err) => {
+      if (err) {
+        console.error('❌ Session regeneration error:', err);
+        return res.status(500).send('Server error');
+      }
+      req.session.adminLoggedIn = true;
+      console.log("✅ Server session created for admin.");
+      res.status(200).send("✅ Session created.");
+    });
+  } else {
+    res.status(400).send("Invalid login attempt.");
+  }
+});
+
+// Logout + session destroy
+app.get('/admin/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/admin-register-x93K7h2Lm5B4f9Q');
+  });
+});
+
+// Protected Admin Routes
+app.get('/admin/private/dashboard', requireLogin, (req, res) => {
+  res.render('admin-dashboard');
+});
+
+app.get('/admin/private/manage-products', requireLogin, (req, res) => {
+  res.render('manage-products');
+});
+
+app.get('/admin/private/view-messages', requireLogin, (req, res) => {
+  res.render('view-messages');
+});
+
+app.get('/admin/private/user-activity', requireLogin, (req, res) => {
+  res.render('user-activity');
+});
+
+app.get('/admin/private/reports', requireLogin, (req, res) => {
+  res.render('reports');
+});
+
+app.get('/admin/private/settings', requireLogin, (req, res) => {
+  res.render('admin-settings');
+});
+
+app.get('/admin/private/system-logs', requireLogin, (req, res) => {
+  res.render('system-logs');
+});
+
+// Email Contact Form
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -43,11 +120,9 @@ app.post('/send-email', async (req, res) => {
     service: 'gmail',
     auth: {
       user: 'hudsonriver4151@gmail.com',
-      pass: 'iaeqlgfsnmzsyomv' // App password
+      pass: 'iaeqlgfsnmzsyomv'
     },
-    tls: {
-      rejectUnauthorized: false
-    }
+    tls: { rejectUnauthorized: false }
   });
 
   const logoURL = 'https://i.postimg.cc/7ZGbmzrt/Logo-01.png';
@@ -67,7 +142,7 @@ app.post('/send-email', async (req, res) => {
   };
 
   const mailToUser = {
-    from: '"Hoffmann\'s Reptile" <hudsonriver4151@gmail.com>',
+    from: 'Hoffmann\'s Reptile <hudsonriver4151@gmail.com>',
     to: email,
     subject: `Thanks for contacting Hoffmann's Reptile!`,
     html: `
@@ -114,39 +189,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// Admin Registration Page
-app.get('/admin-register-x93K7h2Lm5B4f9Q', (req, res) => {
-  res.render('newadmin');
-});
-
-// Admin Dashboard - Protected Route
-app.get('/admin/private/dashboard', (req, res) => {
-  if (req.session && req.session.adminLoggedIn) {
-    res.render('admin-dashboard');
-  } else {
-    res.status(401).send("⛔ Access Denied: Please log in first.");
-  }
-});
-
-// API endpoint to create session after Firebase login
-app.post('/admin/session-login', (req, res) => {
-  const { isLoggedIn } = req.body;
-  if (isLoggedIn) {
-    req.session.adminLoggedIn = true;
-    res.status(200).send("✅ Session created.");
-  } else {
-    res.status(400).send("Invalid login attempt.");
-  }
-});
-
-// Logout Route
-app.get('/admin/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/admin-register-x93K7h2Lm5B4f9Q');
-  });
-});
-
-// Server Start
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Hoffmann's Reptile server running at http://localhost:${PORT}`);
 });

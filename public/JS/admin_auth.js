@@ -58,6 +58,7 @@ if (registerForm) {
         body: JSON.stringify({ isLoggedIn: true })
       });
 
+      sessionStorage.setItem("adminLoggedIn", "true");
       window.location.href = "/admin/private/dashboard";
     } catch (error) {
       console.error("❌ Signup error:", error);
@@ -84,6 +85,7 @@ if (loginForm) {
         body: JSON.stringify({ isLoggedIn: true })
       });
 
+      sessionStorage.setItem("adminLoggedIn", "true");
       alert("✅ Login successful!");
       window.location.href = "/admin/private/dashboard";
     } catch (error) {
